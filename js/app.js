@@ -112,8 +112,8 @@ const addPerson = (firstName, lastName, milesHiked, hours, index) => {
     people.push(new Person(
       firstName,
       lastName,
-      milesHiked,
-      hours
+      Number(milesHiked), // make sure this is saved as a number
+      Number(hours) // make sure this is saved as a number
     ));
   } else {  // update the name
     people[index].milesHiked += milesHiked;
@@ -139,8 +139,8 @@ const buildTable = () => {
       <tr>
         <td>${person.firstName}</td>
         <td>${person.lastName}</td>
-        <td>${person.milesHiked}</td>
-        <td>${person.hours}</td>
+        <td>${person.milesHiked.toFixed(1)}</td>
+        <td>${person.hours.toFixed(1)}</td>
       </tr>`;
   });
   body += '</tbody>';
