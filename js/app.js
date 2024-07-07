@@ -116,8 +116,8 @@ const addPerson = (firstName, lastName, milesHiked, hours, index) => {
       Number(hours) // make sure this is saved as a number
     ));
   } else {  // update the name
-    people[index].milesHiked += milesHiked;
-    people[index].hours += hours;
+    people[index].milesHiked += Number(milesHiked);
+    people[index].hours += Number(hours);
   } // if
 } // addPerson()
 
