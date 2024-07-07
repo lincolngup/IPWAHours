@@ -3,6 +3,8 @@ const COLUMN_FIRST_NAME = 22;
 const COLUMN_LAST_NAME = 23;
 const COLUMN_MILES_HIKED = 42;
 const COLUMN_HOURS = 43;
+const HIKING_PARTNER = 25;
+const HIKING_PARTNER_NAMES = 26;
 
 const inputGroupFile = document.getElementById('inputGroupFile');
 
@@ -68,21 +70,52 @@ const extractNames = (rows) => {
   for (let row = 0; row < rows.length; row++) {
     // look for the name
     const index = people.findIndex(entry =>
-      entry.firstName === rows[row][COLUMN_FIRST_NAME] &&
-      entry.lastName === rows[row][COLUMN_LAST_NAME]
+      // compare in lowecase to capture case differences between entries
+      entry.firstName.toLowerCase() === rows[row][COLUMN_FIRST_NAME].toLowerCase() &&
+      entry.lastName.toLowerCase() === rows[row][COLUMN_LAST_NAME].toLowerCase()
     );
-    // add the name if it wasn't found
-    if (index === -1) {
-      people.push(new Person(
-        rows[row][COLUMN_FIRST_NAME],
-        rows[row][COLUMN_LAST_NAME],
-        rows[row][COLUMN_MILES_HIKED],
-        rows[row][COLUMN_HOURS]
-      ));
-    } else {  // update the name
-      people[index].milesHiked += rows[row][COLUMN_MILES_HIKED];
-      people[index].hours += rows[row][COLUMN_HOURS];
+    addPerson(
+      rows[row][COLUMN_FIRST_NAME],
+      rows[row][COLUMN_LAST_NAME],
+      rows[row][COLUMN_MILES_HIKED],
+      rows[row][COLUMN_HOURS],
+      index
+    );
+
+    if (rows[row][HIKING_PARTNER]?.toLowerCase() === 'other ipwa volunteers') {
+      rows[row][HIKING_PARTNER_NAMES].split('\n')
+        .forEach((fullName) => {
+          // break apart the full name into first name and last name
+          const name = fullName.split(' ');
+          // look for the name
+          const index = people.findIndex(entry =>
+            // compare in lowecase to capture case differences between entries
+            entry.firstName.toLowerCase() === name[0].toLowerCase() &&
+            entry.lastName.toLowerCase() === name[1].toLowerCase()
+          );
+          addPerson(
+            name[0],
+            name[1],
+            rows[row][COLUMN_MILES_HIKED],
+            rows[row][COLUMN_HOURS],
+            index
+          );        });
     } // if
   } // for
   console.log(people);
 }; // extractNames()
+
+const addPerson = (firstName, lastName, milesHiked, hours, index) => {
+  // add the name if it wasn't found
+  if (index === -1) {
+    people.push(new Person(
+      firstName,
+      lastName,
+      milesHiked,
+      hours
+    ));
+  } else {  // update the name
+    people[index].milesHiked += milesHiked;
+    people[index].hours += hours;
+  } // if
+} // addPerson()
