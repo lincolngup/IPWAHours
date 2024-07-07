@@ -32,6 +32,7 @@ const importFile = (event) => {
       // the worksheet name is the first object property
       let worksheetName = Object.keys(fileContents)[0];
       extractNames(fileContents[worksheetName]);
+      buildTable();
     }
     fileReader.readAsArrayBuffer(file);
   } else {
@@ -67,7 +68,8 @@ const convertToJson = (workbook) => {
 }; // convertToJson()
 
 const extractNames = (rows) => {
-  for (let row = 0; row < rows.length; row++) {
+  // start at row 1 to ignore the header row
+  for (let row = 1; row < rows.length; row++) {
     // look for the name
     const index = people.findIndex(entry =>
       // compare in lowecase to capture case differences between entries
@@ -102,7 +104,6 @@ const extractNames = (rows) => {
           );        });
     } // if
   } // for
-  console.log(people);
 }; // extractNames()
 
 const addPerson = (firstName, lastName, milesHiked, hours, index) => {
@@ -119,3 +120,29 @@ const addPerson = (firstName, lastName, milesHiked, hours, index) => {
     people[index].hours += hours;
   } // if
 } // addPerson()
+
+const buildTable = () => {
+  const peopleTable = document.getElementById('peopleTable');
+
+  const header = `
+      <thead>
+      <tr>
+        <th scope="col">First name</th>
+        <th scope="col">Last name</th>
+        <th scope="col">Miles hiked</th>
+        <th scope="col">Hours</th>
+      </tr>
+    </thead>`;
+  let body = '<tbody>';
+  people.forEach((person) => {
+    body += `
+      <tr>
+        <td>${person.firstName}</td>
+        <td>${person.lastName}</td>
+        <td>${person.milesHiked}</td>
+        <td>${person.hours}</td>
+      </tr>`;
+  });
+  body += '</tbody>';
+  peopleTable.innerHTML = header + body;
+} // buildTable()
