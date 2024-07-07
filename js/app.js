@@ -1,8 +1,8 @@
 // spreadsheet column numbers
 const COLUMN_FIRST_NAME = 22;
-const COLUMN_FLAST_NAME = 23;
+const COLUMN_LAST_NAME = 23;
 const COLUMN_MILES_HIKED = 42;
-const COLUMN_HOURS = 42;
+const COLUMN_HOURS = 43;
 
 const inputGroupFile = document.getElementById('inputGroupFile');
 
@@ -61,17 +61,27 @@ const convertToJson = (workbook) => {
       result[sheetName] = rows;
     } // if
   });
-  return result; //JSON.stringify(result, 2, 2);
+  return result;
 }; // convertToJson()
 
 const extractNames = (rows) => {
   for (let row = 0; row < rows.length; row++) {
-    people.push(new Person(
-      rows[row][COLUMN_FFIRST_NAME],
-      rows[row][COLUMN_LAST_NAME],
-      rows[row][COLUMN_MILES_HIKED],
-    rows[row][COLUMN_HOURS]
-    ));
+    const index = people.findIndex(entry =>
+      entry.firstName === rows[row][COLUMN_FIRST_NAME] &&
+      entry.lastName === rows[row][COLUMN_LAST_NAME]
+    );
+    // add the name if it wasn't found
+    if (index === -1) {
+      people.push(new Person(
+        rows[row][COLUMN_FIRST_NAME],
+        rows[row][COLUMN_LAST_NAME],
+        rows[row][COLUMN_MILES_HIKED],
+        rows[row][COLUMN_HOURS]
+      ));
+    } else {
+      people[index].milesHiked += rows[row][COLUMN_MILES_HIKED];
+      people[index].hours += rows[row][COLUMN_HOURS];
+    } // if
   } // for
   console.log(people);
 }; // extractNames()
