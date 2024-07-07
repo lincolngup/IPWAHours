@@ -1,3 +1,9 @@
+// spreadsheet column numbers
+const COLUMN_FIRST_NAME = 22;
+const COLUMN_FLAST_NAME = 23;
+const COLUMN_MILES_HIKED = 42;
+const COLUMN_HOURS = 42;
+
 const inputGroupFile = document.getElementById('inputGroupFile');
 
 function Person(
@@ -59,17 +65,12 @@ const convertToJson = (workbook) => {
 }; // convertToJson()
 
 const extractNames = (rows) => {
-  const LAST_NAME = 23;
-  const FIRST_NAME = 22;
-  const MILES_HIKED = 42;
-  const HOURS = 42;
-
   for (let row = 0; row < rows.length; row++) {
     people.push(new Person(
-      rows[row][FIRST_NAME],
-      rows[row][LAST_NAME],
-      rows[row][MILES_HIKED],
-    rows[row][HOURS]
+      rows[row][COLUMN_FFIRST_NAME],
+      rows[row][COLUMN_LAST_NAME],
+      rows[row][COLUMN_MILES_HIKED],
+    rows[row][COLUMN_HOURS]
     ));
   } // for
   console.log(people);
