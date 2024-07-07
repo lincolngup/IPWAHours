@@ -66,6 +66,7 @@ const convertToJson = (workbook) => {
 
 const extractNames = (rows) => {
   for (let row = 0; row < rows.length; row++) {
+    // look for the name
     const index = people.findIndex(entry =>
       entry.firstName === rows[row][COLUMN_FIRST_NAME] &&
       entry.lastName === rows[row][COLUMN_LAST_NAME]
@@ -78,7 +79,7 @@ const extractNames = (rows) => {
         rows[row][COLUMN_MILES_HIKED],
         rows[row][COLUMN_HOURS]
       ));
-    } else {
+    } else {  // update the name
       people[index].milesHiked += rows[row][COLUMN_MILES_HIKED];
       people[index].hours += rows[row][COLUMN_HOURS];
     } // if
