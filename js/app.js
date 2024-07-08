@@ -32,6 +32,11 @@ const importFile = (event) => {
       // the worksheet name is the first object property
       let worksheetName = Object.keys(fileContents)[0];
       extractNames(fileContents[worksheetName]);
+      // sort the people
+      people.sort(function (firstElement, secondElement) {
+        return firstElement.firstName.localeCompare(secondElement.firstName) ||
+          firstElement.lastName.localeCompare(secondElement.lastName);
+      });
       buildTable();
     }
     fileReader.readAsArrayBuffer(file);
